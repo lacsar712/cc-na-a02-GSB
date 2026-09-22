@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}新建台账卡{% endblock %}
+{% block body %}
+<h1>新建台账卡</h1>
+{% if error %}<p class="err">{{ error }}</p>{% endif %}
+<form class="card" method="post">
+  {% csrf_token %}
+  <label>灯号</label>
+  <input name="aid_code" />
+  <label>所在水道</label>
+  <input name="waterway" />
+  <label>标称坎德拉</label>
+  <input name="nominal_cd" type="number" step="0.1" />
+  <button type="submit">建卡</button>
+</form>
+{% endblock %}

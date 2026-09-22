@@ -2,16 +2,22 @@
 {% block body %}
 <h1>登记巡检</h1>
 {% if error %}<p class="err">{{ error }}</p>{% endif %}
+{% if cards %}
 <form class="card" method="post">
   {% csrf_token %}
-  <label>航标编号</label>
-  <input name="aid_code" />
+  <label>灯号</label>
+  <select name="aid_code">
+    {% for card in cards %}
+    <option value="{{ card.aid_code }}">{{ card.aid_code }} · {{ card.waterway }}（标称 {{ card.nominal_cd }} cd）</option>
+    {% endfor %}
+  </select>
   <label>实测光强（坎德拉）</label>
   <input name="measured_cd" type="number" step="0.1" />
-  <label>要求光强</label>
-  <input name="required_cd" type="number" step="0.1" value="1200" />
   <label>方位偏差（度）</label>
   <input name="bearing_error_deg" type="number" step="0.1" value="0" />
   <button type="submit">提交</button>
 </form>
+{% else %}
+<p>还没有台账卡，每座灯须先建卡才能挂巡检。{% if can_write %}<a href="{% url 'card_create' %}">去建卡</a>{% endif %}</p>
+{% endif %}
 {% endblock %}

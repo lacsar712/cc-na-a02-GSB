@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}灯标台账{% endblock %}
+{% block body %}
+<h1>灯标台账</h1>
+{% if can_write %}<p><a href="{% url 'card_create' %}">新建台账卡</a></p>{% endif %}
+<table>
+  <thead><tr><th>灯号</th><th>所在水道</th><th>标称坎德拉</th><th>实测次数</th><th></th></tr></thead>
+  <tbody>
+  {% for card in cards %}
+    <tr>
+      <td>{{ card.aid_code }}</td>
+      <td>{{ card.waterway }}</td>
+      <td>{{ card.nominal_cd }}</td>
+      <td>{{ card.inspection_count }}</td>
+      <td><a href="{% url 'card_detail' card.aid_code %}">翻开</a></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">还没有台账卡</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

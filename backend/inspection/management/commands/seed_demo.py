@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, User
 from django.core.management.base import BaseCommand
 
-from inspection.models import Inspection
+from inspection.models import AidCard, Inspection
 from inspection.rules import judge
 
 
@@ -20,6 +20,19 @@ class Command(BaseCommand):
             watch.set_password("watch123456")
             watch.save()
         watch.groups.remove(group)
+        cards = [
+            ("LH-01", "长江口北槽航道", 1200),
+            ("LH-09", "黄浦江航道", 1200),
+        ]
+        for code, waterway, nominal in cards:
+            AidCard.objects.get_or_create(
+                aid_code=code,
+                defaults={
+                    "waterway": waterway,
+                    "nominal_cd": nominal,
+                    "created_by": "keeper",
+                },
+            )
         if Inspection.objects.exists():
             self.stdout.write("already seeded")
             return
