@@ -22,6 +22,7 @@
   <header>
     <strong>航标灯光巡检台</strong>
     {% if user.is_authenticated %}
+      <a href="{% url 'cards' %}">灯标台账</a>
       <a href="{% url 'list' %}">巡检记录</a>
       {% if can_write %}<a href="{% url 'create' %}">登记</a>{% endif %}
       <span style="margin-left:auto">{{ user.username }}</span>

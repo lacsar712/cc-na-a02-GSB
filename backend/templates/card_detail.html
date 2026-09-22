@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>台账卡 · {{ card.aid_code }}</h1>
+<p>所在水道：{{ card.waterway }}　标称光强：{{ card.nominal_cd }} 坎德拉　建卡人：{{ card.created_by }}</p>
+{% if can_write %}
+<p><a href="{% url 'create' %}">为该灯登记一次实测</a></p>
+{% endif %}
+<h2>历次实测</h2>
+<table>
+  <thead><tr><th>时间</th><th>实测光强</th><th>方位偏差</th><th>结论</th><th>说明</th><th></th></tr></thead>
+  <tbody>
+  {% for row in rows %}
+    <tr>
+      <td>{{ row.created_at|date:"Y-m-d H:i" }}</td>
+      <td>{{ row.measured_cd }}</td>
+      <td>{{ row.bearing_error_deg }}</td>
+      <td class="{% if row.verdict == '合格' %}ok{% else %}bad{% endif %}">{{ row.verdict }}</td>
+      <td>{{ row.note }}</td>
+      <td><a href="{% url 'detail' row.pk %}">查看实测</a></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6">该灯还没有实测记录</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p><a href="{% url 'cards' %}">返回台账</a></p>
+{% endblock %}

@@ -4,14 +4,24 @@
 {% if error %}<p class="err">{{ error }}</p>{% endif %}
 <form class="card" method="post">
   {% csrf_token %}
-  <label>航标编号</label>
-  <input name="aid_code" />
+  <label>灯号（仅可挑选已建台账卡的灯）</label>
+  {% if cards %}
+  <select name="aid_code" required>
+    <option value="">请选择灯号</option>
+    {% for c in cards %}
+      <option value="{{ c.aid_code }}" {% if c.aid_code == selected %}selected{% endif %}>
+        {{ c.aid_code }}（{{ c.waterway }}，标称 {{ c.nominal_cd }} cd）
+      </option>
+    {% endfor %}
+  </select>
+  {% else %}
+  <p class="err">台账里还没有任何灯卡，请先由持灯账号建卡。</p>
+  {% endif %}
   <label>实测光强（坎德拉）</label>
-  <input name="measured_cd" type="number" step="0.1" />
-  <label>要求光强</label>
-  <input name="required_cd" type="number" step="0.1" value="1200" />
+  <input name="measured_cd" type="number" step="0.1" value="{{ measured }}" required />
   <label>方位偏差（度）</label>
-  <input name="bearing_error_deg" type="number" step="0.1" value="0" />
+  <input name="bearing_error_deg" type="number" step="0.1" value="{{ bearing|default:'0' }}" required />
   <button type="submit">提交</button>
 </form>
+<p>要求光强以所选灯号台账卡上的标称坎德拉为准，无需手填。</p>
 {% endblock %}

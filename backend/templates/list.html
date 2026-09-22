@@ -6,7 +6,7 @@
   <tbody>
   {% for row in rows %}
     <tr>
-      <td>{{ row.aid_code }}</td>
+      <td><a href="{% url 'card_detail' row.card_id %}">{{ row.aid_code }}</a></td>
       <td>{{ row.measured_cd }}</td>
       <td class="{% if row.verdict == '合格' %}ok{% else %}bad{% endif %}">{{ row.verdict }}</td>
       <td>{{ row.note }}</td>

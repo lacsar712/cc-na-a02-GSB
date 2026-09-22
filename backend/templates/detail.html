@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>{{ row.aid_code }}</h1>
+<p>台账卡：<a href="{% url 'card_detail' row.card_id %}">{{ row.aid_code }}（{{ row.card.waterway }}，标称 {{ row.card.nominal_cd }} cd）</a></p>
 <p class="{% if row.verdict == '合格' %}ok{% else %}bad{% endif %}">{{ row.verdict }} · {{ row.note }}</p>
 <p>实测光强 {{ row.measured_cd }}，要求 {{ row.required_cd }}，方位偏差 {{ row.bearing_error_deg }} 度</p>
 <p>登记人 {{ row.created_by }}</p>
